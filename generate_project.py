@@ -40,6 +40,51 @@ if __name__ == '__main__':
     app.run(debug=True)
 """)
 
+    # config.py
+    (base / "config.py").write_text(
+        """SECRET_KEY = 'change-me'
+SQLALCHEMY_DATABASE_URI = 'sqlite:///reservation.db'
+ADMIN_USERNAME = 'admin'
+ADMIN_PASSWORD = 'password'
+"""
+    )
+
+    # utils.py
+    (base / "utils.py").write_text(
+        """import csv
+from flask_mail import Mail, Message
+
+mail = Mail()
+
+def enregistrer_csv(path, data, champs):
+    with open(path, 'w', newline='') as f:
+        writer = csv.DictWriter(f, fieldnames=champs)
+        writer.writeheader()
+        writer.writerows(data)
+
+def envoyer_mail(sujet, destinataires, corps):
+    msg = Message(sujet, recipients=destinataires, body=corps)
+    mail.send(msg)
+
+def init_mail(app):
+    mail.init_app(app)
+"""
+    )
+
+    # models.py
+    (base / "models.py").write_text(
+        """from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+class Reservation(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nom = db.Column(db.String(100))
+    email = db.Column(db.String(120))
+    date = db.Column(db.DateTime)
+"""
+    )
+
     # index.html
     (base / "templates" / "index.html").write_text(f"""<!DOCTYPE html>
 <html>
@@ -70,10 +115,18 @@ header {{ background-color: {couleur}; color: white; padding: 10px 20px; display
 """)
 
     # README.md
-    (base / "README.md").write_text(f"# {nom_site}\n\nCe site est généré automatiquement.\n\n- Couleur principale : {couleur}\n- Dossier : {slug}\n")
+    (base / "README.md").write_text(
+        f"# {nom_site}\n\nCe site est généré automatiquement.\n\n"
+        f"- Couleur principale : {couleur}\n"
+        f"- Dossier : {slug}\n\n"
+        "## Modules\n"
+        "- `config.py` : paramètres de configuration (clé secrète, URI de base de données, identifiants admin).\n"
+        "- `utils.py` : fonctions `enregistrer_csv`, `envoyer_mail` et `init_mail`.\n"
+        "- `models.py` : définition de SQLAlchemy (`db`) et du modèle `Reservation`.\n"
+    )
 
     # .gitignore, Procfile, requirements.txt
-    (base / "requirements.txt").write_text("Flask")
+    (base / "requirements.txt").write_text("Flask\nFlask-Mail\nFlask-SQLAlchemy\n")
     (base / "Procfile").write_text("web: gunicorn app:app")
     (base / ".gitignore").write_text("instance/\n*.db\n__pycache__/\n.env")
 
