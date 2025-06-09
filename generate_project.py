@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-TEMPLATE_DIR = Path(__file__).parent / "generator_templates"
+TEMPLATE_DIR = Path(__file__).parent / "generator_templates_booking_services"
 
 def create_project(nom_site, slug, couleur="#00838f"):
     base = Path(slug)
@@ -18,6 +18,10 @@ def create_project(nom_site, slug, couleur="#00838f"):
     # app.py
     app_src = (TEMPLATE_DIR / "app.py").read_text(encoding="utf-8")
     (base / "app.py").write_text(app_src, encoding="utf-8")
+
+    # config.py
+    app_src = (TEMPLATE_DIR / "config.py").read_text(encoding="utf-8")
+    (base / "config.py").write_text(app_src, encoding="utf-8")
 
     # index.html
     index_src = (TEMPLATE_DIR / "index.html").read_text(encoding="utf-8")
