@@ -14,10 +14,13 @@ def create_project(nom_site, slug, couleur="#00838f"):
         folder.mkdir(parents=True, exist_ok=True)
 
     # app.py
-    (base / "app.py").write_text(f"""from flask import Flask, render_template
+    (base / "app.py").write_text(f"""from flask import Flask, render_template, request
 app = Flask(__name__)
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    if request.method == 'POST':
+        # Les données envoyées pourraient être traitées ici
+        form_data = request.form
     return render_template('index.html', nom_site="{nom_site}")
 
 @app.route('/cgu')
@@ -59,6 +62,15 @@ if __name__ == '__main__':
             <img src="{{{{ url_for('static', filename='img/service1.jpg') }}}}" width="150">
             <img src="{{{{ url_for('static', filename='img/service2.jpg') }}}}" width="150">
         </div>
+    </section>
+    <section>
+        <h2>Contactez-nous</h2>
+        <form method="post" action="/">
+            <label>Nom : <input type="text" name="nom" required></label><br>
+            <label>Email : <input type="email" name="email" required></label><br>
+            <label>Message :<br><textarea name="message" rows="4" cols="40" required></textarea></label><br>
+            <button type="submit">Envoyer</button>
+        </form>
     </section>
 </body>
 </html>
