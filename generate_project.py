@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-TEMPLATE_DIR = Path(__file__).parent / "generator_templates_booking_services"
+TEMPLATE_DIR = Path(__file__).parent / "composants" / "generator_templates_booking_services"
 
 def create_project(nom_site, slug, couleur="#00838f"):
     base = Path(slug)

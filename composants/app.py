@@ -1,8 +1,13 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, session, Response
-from utils import enregistrer_csv, envoyer_mail, init_mail
-from config import SECRET_KEY, SQLALCHEMY_DATABASE_URI, ADMIN_USERNAME, ADMIN_PASSWORD_HASH
-from models import db, Reservation
+from composants.utils import enregistrer_csv, envoyer_mail, init_mail
+from composants.config import (
+    SECRET_KEY,
+    SQLALCHEMY_DATABASE_URI,
+    ADMIN_USERNAME,
+    ADMIN_PASSWORD_HASH,
+)
+from composants.models import db, Reservation
 from werkzeug.security import check_password_hash
 from collections import Counter
 import csv

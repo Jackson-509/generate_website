@@ -1,6 +1,6 @@
 import csv, os
 from flask_mail import Mail, Message
-from config import CSV_FILE, MAIL_SETTINGS
+from composants.config import CSV_FILE, MAIL_SETTINGS
 
 mail = Mail()  # ⚠️ Objet global utilisé par Flask
 
