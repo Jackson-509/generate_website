@@ -17,7 +17,10 @@ MAIL_SETTINGS = {
 }
 
 # 📄 Fichier CSV utilisé pour sauvegarde locale
-CSV_FILE = os.getenv("CSV_FILE", "reservations.csv")
+CSV_FILE = os.getenv(
+    "CSV_FILE",
+    os.path.join(os.path.dirname(__file__), "reservations.csv"),
+)
 
 # 🧠 Configuration de la base de données
 basedir = os.path.abspath(os.path.dirname(__file__))
