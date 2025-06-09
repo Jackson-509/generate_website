@@ -1,4 +1,5 @@
 import os
+import shutil
 from pathlib import Path
 
 TEMPLATE_DIR = Path(__file__).parent / "generator_templates"
@@ -14,6 +15,13 @@ def create_project(nom_site, slug, couleur="#00838f"):
 
     for folder in folders:
         folder.mkdir(parents=True, exist_ok=True)
+
+    # Copier les modules Python de base depuis TEMPLATE_DIR
+    for filename in ["utils.py", "config.py", "models.py"]:
+        src = TEMPLATE_DIR / filename
+        dst = base / filename
+        if src.exists():
+            shutil.copy(src, dst)
 
     # app.py
     app_src = (TEMPLATE_DIR / "app.py").read_text()
@@ -48,6 +56,7 @@ def create_project(nom_site, slug, couleur="#00838f"):
         content = (TEMPLATE_DIR / page).read_text().format(nom_site=nom_site)
         (base / "templates" / page).write_text(content)
 
+    # Ajouter le footer à toutes les pages HTML
     footer = (TEMPLATE_DIR / "footer.html").read_text()
     for html_file in ["index.html", "cgu.html", "mentions-legales.html", "politique-confidentialite.html", "parametres-cookies.html"]:
         html_path = base / "templates" / html_file
