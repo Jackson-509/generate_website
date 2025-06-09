@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+import shutil
+
+TEMPLATE_DIR = Path(__file__).parent / "templates"
 
 def create_project(nom_site, slug, couleur="#00838f"):
     base = Path(slug)
@@ -10,8 +13,16 @@ def create_project(nom_site, slug, couleur="#00838f"):
         base / "instance"
     ]
 
+
     for folder in folders:
         folder.mkdir(parents=True, exist_ok=True)
+
+    # Copier les modules Python de base depuis TEMPLATE_DIR
+    for filename in ["utils.py", "config.py", "models.py"]:
+        src = TEMPLATE_DIR / filename
+        dst = base / filename
+        if src.exists():
+            shutil.copy(src, dst)
 
     # app.py
     (base / "app.py").write_text("""import os
@@ -199,7 +210,11 @@ header {{ background-color: {couleur}; color: white; padding: 10px 20px; display
     (base / "README.md").write_text(f"# {nom_site}\n\nCe site est généré automatiquement.\n\n- Couleur principale : {couleur}\n- Dossier : {slug}\n")
 
     # .gitignore, Procfile, requirements.txt
-    (base / "requirements.txt").write_text("Flask")
+    (base / "requirements.txt").write_text("\n".join([
+        "Flask",
+        "Flask-Mail",
+        "Flask-SQLAlchemy"
+    ]))
     (base / "Procfile").write_text("web: gunicorn app:app")
     (base / ".gitignore").write_text("instance/\n*.db\n__pycache__/\n.env")
 
