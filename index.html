@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{nom_site}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" height="60">
+        <h1>Bienvenue sur {nom_site}</h1>
+    </header>
+    <section>
+        <img src="{{ url_for('static', filename='img/banner.jpg') }}" alt="Bannière" width="100%">
+        <p>Nos services :</p>
+        <div>
+            <img src="{{ url_for('static', filename='img/service1.jpg') }}" width="150">
+            <img src="{{ url_for('static', filename='img/service2.jpg') }}" width="150">
+        </div>
+    </section>
+</body>
+</html>
